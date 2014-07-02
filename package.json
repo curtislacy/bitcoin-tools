@@ -1,0 +1,24 @@
+{
+  "name": "bitcoin-tools",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Various bitcoin experiments",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/curtislacy/bitcoin-tools.git"
+  },
+  "keywords": [
+    "mastercoin",
+    "bitcoin",
+    "counterparty"
+  ],
+  "author": "Curtis Lacy",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "bitcoinjs-lib": "1.0.0"
+  }
+}
