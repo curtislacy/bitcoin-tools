@@ -1,7 +1,7 @@
 var bitcoin = require( 'bitcoinjs-lib' );
 
 if( process.argv.length < 3 )
-	console.log( 'Usage: node generate-hd.js <seed string> [<number of keys to generate>]' );
+	console.log( 'Usage: node generate-hd.js <seed string>' );
 else
 {
 	var seedBuffer = new Buffer( process.argv[ 2 ] );
@@ -12,24 +12,30 @@ else
 	console.log( 'Base58 public key:  ' + hdWallet.toBase58( false ) );
 	console.log();
 
-/*	console.log( '*** First, the "master node" public and private keys.' );
-	console.log( 'Private key: ' + hdWallet.priv.toWif() );
-	console.log( 'Public Key: ' + hdWallet.pub.toWif() );
-	console.log();*/
 
-	console.log( '*** Here are your private keys and their corresponding addresses:' );
-	for( var i=1; i<=number; i++ )
+	for( var number = 10; number <= 100000000; number *= 10 )
 	{
-		var derivedPrivate = hdWallet.derive( i );
-		console.log( 'Key: ' + derivedPrivate.privKey.toWIF() + '   Addr: ' + derivedPrivate.getAddress().toString() );
-	}
-	console.log();
+		var startTime = new Date().getTime();
+		console.log( '- Deriving private keys at depth ' + number );
+		for( var i=1; i<=100; i++ )
+		{
+			var derivedPrivate = hdWallet.derive( number );
+		}
+		var endTime = new Date().getTime();
+		console.log( 'Total time to calculate a private key at depth ' + number + ': ' + ( endTime - startTime )/100.0 + 'ms.' );
 
-	var fromPub = bitcoin.HDNode.fromBase58( hdWallet.toBase58( false ) );
-	console.log( '*** Now, some derived addresses from the public key only (just to make sure they match):' );
-	for( var i=1; i<=number; i++ )
-	{
-		var derived = fromPub.derive( i );
-		console.log( 'Addr: ' + derived.getAddress().toString() );
+
+		startTime = new Date().getTime();
+		var fromPub = bitcoin.HDNode.fromBase58( hdWallet.toBase58( false ) );
+		console.log( '- Deriving public keys at depth ' + number );
+		for( var i=1; i<=100; i++ )
+		{
+			var derived = fromPub.derive( number );
+		}
+		var endTime = new Date().getTime();
+		console.log( 'Total time to calculate a public key at depth ' + number + ': ' + ( endTime - startTime )/100.0 + 'ms.' );
+		
+		console.log();
+
 	}
 }
